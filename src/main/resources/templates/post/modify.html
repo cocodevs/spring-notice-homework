@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+
+<th:block layout:fragment="f-title">공지사항 상세</th:block>
+<th:block layout:fragment="f-css"> </th:block>
+<th:block layout:fragment="f-script"> </th:block>
+
+<div layout:fragment="f-content" class="content-div">
+    <div class="container-fluid">
+        <form th:action="@{/posts/{postId}(postId=${post.id})}" th:object="${post}" method="post">
+            <input type="hidden" name="_method" value="put" />
+            <input type="hidden" th:field="*{id}">
+            <div class="form-group">
+                <label for="postInputTitle">제목</label>
+                <input type="text" th:field="*{title}" id="postInputTitle" class="form-control" placeholder="제목을 입력하세요.">
+            </div>
+            <div class="form-group">
+                <label for="postInputContents">내용</label>
+                <textarea name="contents" id="postInputContents" type="text" rows="10" cols="80" placeholder="내용을 입력하세요.(최대 2000자)" th:field="*{contents}" class="form-control text-area"></textarea>
+            </div>
+            <div style="padding: 10px;float: right;">
+                <a th:href="@{/posts/{postId}(postId=${post.id})}" type="submit" class="btn btn-secondary">취소</a>
+                <button type="submit" class="btn btn-primary">수정</button>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

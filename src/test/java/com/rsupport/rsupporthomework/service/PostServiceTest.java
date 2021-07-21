@@ -5,9 +5,10 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -18,10 +19,11 @@ class PostServiceTest {
     @Test
     public void 공지사항_목록_조회(){
         //given
+        Pageable pageable = PageRequest.of(0, 10);
         //when
-        List<Post> postList = postService.findAll();
+        Page<Post> postList = postService.findAll(pageable);
         //then
-        Assertions.assertThat(postList.size()).isEqualTo(2);
+        Assertions.assertThat(postList.getTotalElements()).isEqualTo(2);
     }
 
     @Test
@@ -40,7 +42,7 @@ class PostServiceTest {
         Post post = new Post();
         post.setTitle("테스트 공지사항");
         post.setContents("공지사항 내용~!");
-        post.setCreateId(1L);
+        post.setCreatedId(1L);
         //when
         postService.insertByPost(post);
         //then

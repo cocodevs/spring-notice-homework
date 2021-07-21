@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/layout">
+
+<th:block layout:fragment="f-title">공지사항 상세</th:block>
+<th:block layout:fragment="f-css"> </th:block>
+<th:block layout:fragment="f-script"> </th:block>
+
+<div layout:fragment="f-content" class="content-div">
+    <div class="container-fluid">
+        <h1 class="mt-4" th:text="${post.title}"></h1>
+        <strong>작성자</strong>
+        <span th:text="${post.member.name}"></span>
+        <br>
+        <strong>작성일시</strong>
+        <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
+        <hr>
+        <div th:text="${post.contents}" style="min-height: 200px;overflow: auto;white-space: break-spaces;"></div>
+        <hr>
+    </div>
+    <div style="padding: 10px;float: right;">
+        <a href="/posts" class="btn btn-primary">목록</a>
+        <th:block sec:authorize="hasAnyRole('ADMIN')">
+        <a th:href="@{/posts/modify-form/{postId}(postId=${post.id})}" class="btn btn-secondary">수정</a>
+        <a href="#" id="btnPostDelete" class="btn btn-danger">삭제</a>
+        </th:block>
+    </div>
+</div>
+</html>
