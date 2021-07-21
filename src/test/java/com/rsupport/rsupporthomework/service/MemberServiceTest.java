@@ -21,10 +21,10 @@ class MemberServiceTest {
         member.setPassword("1234");
 
         //when
-        Member savedMember = memberService.join(member);
+        Long savedId = memberService.join(member);
 
         //then
-        Member findMember = memberService.findById(savedMember.getId());
+        Member findMember = memberService.findById(savedId).get();
         Assertions.assertThat(member.getName()).isEqualTo(findMember.getName());
     }
 /*
