@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -15,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 class PostServiceTest {
 
     @Autowired PostService postService;
+
+    @Autowired MemberService memberService;
 
     @Test
     public void 공지사항_목록_조회(){
@@ -37,19 +40,20 @@ class PostServiceTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@rsupport.com", password = "1234", roles = "ADMIN")
     public void 공지사항_추가(){
         //given
         Post post = new Post();
         post.setTitle("테스트 공지사항");
         post.setContents("공지사항 내용~!");
-        post.setCreatedId(1L);
         //when
         postService.insertByPost(post);
         //then
-        Assertions.assertThat(post.getId()).isEqualTo(3);
+        Assertions.assertThat(post.getMember().getId()).isEqualTo(1);
     }
 
     @Test
+    @WithMockUser(username = "admin@rsupport.com", password = "1234", roles = "ADMIN")
     public void 공지사항_수정(){
         //given
         Post post = postService.findById(1L);
@@ -61,11 +65,16 @@ class PostServiceTest {
         Assertions.assertThat(post2.getTitle()).isEqualTo("수정된 공지사항 1");
     }
 
-    @Test void 타인이_게시한_공지사항_수정(){
+    @Test
+    public void 공지사항_삭제(){
         //given
-
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Post> postList = postService.findAll(pageable);
+        Long oldCount = postList.getTotalElements();
         //when
-
+        postService.delete(1L);
+        Long newCount = postService.findAll(pageable).getTotalElements();
         //then
+        Assertions.assertThat(oldCount).isEqualTo(newCount + 1);
     }
 }
