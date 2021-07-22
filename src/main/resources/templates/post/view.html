@@ -47,6 +47,14 @@
         <hr>
         <div th:text="${post.contents}" style="min-height: 200px;overflow: auto;white-space: break-spaces;"></div>
         <hr>
+        
+        <th:block th:if="${#lists.size(post.postFiles) != 0}">
+            <strong>다운로드</strong>
+            <div th:each="file : ${post.postFiles}">
+                <a th:href="${file.filePath}" th:download="${file.originalFileName}" th:text="${file.originalFileName}">다운로드</a>
+            </div>
+        </th:block>
+
     </div>
     <div style="padding: 10px;float: right;">
         <a href="/posts" class="btn btn-primary">목록</a>
