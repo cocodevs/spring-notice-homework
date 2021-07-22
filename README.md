@@ -54,10 +54,9 @@
 
 <br>
 
-> resources/import.sql로 최초 데이터 insert
 
-<br>
-
+> 비회원, 사용자는 공지사항에 대하여 READ 권한, 관리자는 CRUD 권한
+> 
 > 관리자 ID: admin@rsupport.com / PW: 1234
 > 
 > 사용자 ID: cocodev@naver.com / PW: 1234
